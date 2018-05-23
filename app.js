@@ -8,8 +8,8 @@ app.get('/', (req, res) =>{//slash is the first parameter(location paramenter) a
     res.render('index');
 });
 
-app.get('/hello', (req, res) =>{//slash is the first parameter(location paramenter) and anonymous callback function
-    res.send('<h1>Hello, Javascript developer!</h1>');
+app.get('/cards', (req, res) =>{//slash is the first parameter(location paramenter) and anonymous callback function
+    res.render('card', { prompt: "Who is buried in Grant's tomb?", hint: "Look at the question."});
 });
 
 app.listen(3000, ()=>{
