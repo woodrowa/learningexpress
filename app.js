@@ -9,9 +9,23 @@ app.use(cookieParser());
 
 app.set('view engine', 'pug');//tells express which templating engine to use
 
+app.use((req, res, next)=> {//middleware
+    console.log('One');
+    next();
+});
+
+app.use((req, res, next)=> {//middleware
+    console.log('Two');
+    next();
+});
+
 app.get('/', (req, res) =>{//slash is the first parameter(location paramenter) and anonymous callback function
+    if (req.cookies.username){
     const name = req.cookies.username;//put name in its own variable and set it equal to name value in render
     res.render('index', {name: name});//will load saved username property from cookies; will fill in name value in pug file
+    } else {
+        res.redirect('/hello');
+    }
 });
 
 app.get('/cards', (req, res) =>{//slash is the first parameter(location paramenter) and anonymous callback function
@@ -19,13 +33,22 @@ app.get('/cards', (req, res) =>{//slash is the first parameter(location parament
 });
 
 app.get('/hello', (req, res) =>{//get route serves the form
-    res.render('hello');
+    if (req.cookies.username){
+        res.redirect('/');
+    } else{
+        res.render('hello');
+    }
 });
 
 app.post('/hello', (req, res) =>{//to post the form data to this route
     res.cookie('username', req.body.username);//send cookie to browser after you submit form; set username equal to req.body.username
     res.redirect('/');//redirects to the home page
 });
+
+app.post('/goodbye', (req, res)=>{
+    res.clearCookie('username');
+    res.redirect('/hello');
+})
 
 app.listen(3000, ()=>{
     console.log('The application is running on local port: 3000')
