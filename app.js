@@ -4,18 +4,20 @@ const cookieParser = require('cookie-parser');
 
 const app = express();//returns an express application; central part of app
 
-app.use(bodyParser.urlencoded({extended: false}));//allows you to use bodyparser to specify info we want in request
+
+app.use(bodyParser.urlencoded({extended: false}));//allows you to use bodyparser to specify info we want in request; parse application/x-www-form-urlencoded
 app.use(cookieParser());
 
 app.set('view engine', 'pug');//tells express which templating engine to use
 
 app.use((req, res, next)=> {//middleware
+    req.message = "This message made it!";
     console.log('One');
     next();
 });
 
 app.use((req, res, next)=> {//middleware
-    console.log('Two');
+    console.log(req.message);
     next();
 });
 
