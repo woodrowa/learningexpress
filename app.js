@@ -10,14 +10,15 @@ app.use(cookieParser());
 
 app.set('view engine', 'pug');//tells express which templating engine to use
 
-app.use((req, res, next)=> {//middleware
-    req.message = "This message made it!";
-    console.log('One');
-    next();
-});
+/*app.use((req, res, next)=> {//middleware
+    //console.log('Hello');
+    //const err = new Error("This is an error");//string is error message
+    //err.status = 500;
+    //next(err);
+});*/
 
 app.use((req, res, next)=> {//middleware
-    console.log(req.message);
+    console.log("Arien is the man");
     next();
 });
 
@@ -51,6 +52,19 @@ app.post('/goodbye', (req, res)=>{
     res.clearCookie('username');
     res.redirect('/hello');
 })
+
+app.use((req, res, next)=>{
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+//error handler
+app.use((err,req,res,next)=>{
+    res.locals.error=err;
+    res.status(err.status);
+    res.render('error');
+});
 
 app.listen(3000, ()=>{
     console.log('The application is running on local port: 3000')
