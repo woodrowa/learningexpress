@@ -22,36 +22,11 @@ app.use((req, res, next)=> {//middleware
     next();
 });
 
-app.get('/', (req, res) =>{//slash is the first parameter(location paramenter) and anonymous callback function
-    if (req.cookies.username){
-    const name = req.cookies.username;//put name in its own variable and set it equal to name value in render
-    res.render('index', {name: name});//will load saved username property from cookies; will fill in name value in pug file
-    } else {
-        res.redirect('/hello');
-    }
-});
+const mainRoutes = require('./routes');//since folder has index.js file we don't need to refer to it when requiring it
+const cardRoutes = require('./routes/cards');
 
-app.get('/cards', (req, res) =>{//slash is the first parameter(location paramenter) and anonymous callback function
-    res.render('card', { prompt: "Who is buried in Grant's tomb?", hint: "Look at the question."});
-});
-
-app.get('/hello', (req, res) =>{//get route serves the form
-    if (req.cookies.username){
-        res.redirect('/');
-    } else{
-        res.render('hello');
-    }
-});
-
-app.post('/hello', (req, res) =>{//to post the form data to this route
-    res.cookie('username', req.body.username);//send cookie to browser after you submit form; set username equal to req.body.username
-    res.redirect('/');//redirects to the home page
-});
-
-app.post('/goodbye', (req, res)=>{
-    res.clearCookie('username');
-    res.redirect('/hello');
-})
+app.use(mainRoutes);//to tuse main routes
+app.use('/cards', cardRoutes);//to use cards.js file and cards routes
 
 app.use((req, res, next)=>{
     const err = new Error('Not Found');
