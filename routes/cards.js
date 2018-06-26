@@ -18,9 +18,10 @@ router.get('/:id', (req, res) =>{//slash is the first parameter(location paramen
     };//res.redirect() doesnt stop the execution in the router.get method
     //since youre also calling res.render() at the bottom, you get an error so you need to return res.redirect()
     
+    const name = req.cookies.username;//to give the layout template access to name variable
     const text = cards[id][side];//we get either the answer or question from the flashcardData.json
     const hint = cards[id].hint;//we can get the hint in the same way
-    const templateData = {text, id};//putting text and hint into templateData variable
+    const templateData = {text, id, name};//putting text and hint into templateData variable
     
     if (side === "question"){
        templateData.hint = hint;//setting templateData's hint property to the hint variable if side equals question
